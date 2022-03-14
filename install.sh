@@ -7,9 +7,9 @@
 # installed applications
 
 user=$(whoami)
-packages=$(cat packages.txt)
+packages=$(echo sudo firefox sway swayidle git build-essential bison brightnessctl nvim)
 
-su -
+su - root
 apt update && apt upgrade
 apt install sudo -y
 echo "$user ALL=(ALL:ALL) ALL" >> /etc/sudoers.d/$user 
