@@ -1,0 +1,12 @@
+sudo
+firefox
+sway
+swayidle
+git
+build-essential
+bison 
+brightnessctl
+nvim
+
+
+
