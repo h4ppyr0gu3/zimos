@@ -21,7 +21,8 @@ RED='\033[0;31m'
 ORANGE='\033[0;33m'
 NC='\033[0m'
 user=$(whoami)
-package_dir=""
+current_dir=$(pwd)
+package_dir="${current_dir}/packages.txt"
 DESKTOP=1
 SERVER=1
 kernel=""
@@ -31,9 +32,12 @@ languages=()
 custom=()
 
 main () {
+    echo $user
+    echo $package_dir
     parse_params $@
     verify_parameters
     accept_parameters
+    install
 }
 
 print_help () {
@@ -108,12 +112,22 @@ then
     echo please specify either desktop or server installation
     exit
 fi
+
+
 }
 
 accept_parameters () {
-    echo "######################################################"
-    echo -e "#           ${GREEN}Verify installation parameters${NC}           #"
-    echo "######################################################"
+    echo "###############################################################################################"
+    echo "###############################################################################################"
+    echo "###############################################################################################"
+    echo -e "###  ${GREEN}\\    /          _     ___                                _ ${NC}                            ###" 
+    echo -e "###  ${GREEN} \\  /  _   _ ._|_\\/    |  _  _ _|_ _ || _ _|_ . _  _    |_) _   _ _ __  _ _|_ _   _ _${NC}  ###"
+    echo -e "###  ${GREEN}  \\/  (/_ |  | | /    _|_| |_>  |_(_|||(_| |_ |(_)| |   |  (_| | (_||||(/_ |_(/_ | _>${NC}  ###"
+    echo -e "###                            ${GREEN}Verify installation parameters${NC}                               ###"
+    echo "###############################################################################################"
+    echo "###############################################################################################"
+    echo "###############################################################################################"
+    printf "\n"
 
     if [ $DESKTOP -eq 0 ];
     then
@@ -147,7 +161,9 @@ accept_parameters () {
         echo Using default package directory: $package_dir
     fi
 
-    echo "######################################################"
+    printf "\n"
+    echo "###############################################################################################"
+    printf "\n"
     read -p "Do you want to continue with install (y/n): " response
 
     if [[ $response = y* ]] || [[ $response = Y* ]] ;
@@ -159,11 +175,11 @@ accept_parameters () {
     fi
 }
 
-# install () {
-# sudo apt update && sudo apt upgrade
-#
-# sudo apt install $kernel_version
-# sudo apt install < $packages -y
+install () {
+    sudo apt update && sudo apt upgrade
 
+    sudo apt install $kernel_version
+    sudo apt install < $package_dir -y
+}
 
 main "$@"
