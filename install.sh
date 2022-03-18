@@ -24,133 +24,140 @@ user=$(whoami)
 package_dir=""
 DESKTOP=1
 SERVER=1
-KERNEL=""
+kernel=""
 available_languages=( "ruby" "python" )
 available_custom=( "ly" )
 languages=()
 custom=()
 
-# main () {
-# }
+main () {
+    parse_params $@
+    verify_parameters
+    accept_parameters
+}
 
 print_help () {
     echo print_help
 }
 
-while [ "$1" != "" ]
-do
-    case "$1" in
-        -k | --kernel)
-            if [ "$2" = "" ]
-            then
-                echo -e "${RED}ERROR: No kernel given ${NC}"
-                exit
-            fi
-            KERNEL=$2
-            shift 2
-            ;;
-        -d | --desktop)
-            DESKTOP=$(echo 0)
-            shift
-            ;;  
-        -s | --server)
-            SERVER=$(0)
-            shift
-            ;;
-        -l | --language) 
-            while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]] ; do
-                if ! [[ " ${available_languages[*]} " =~ " $2 " ]] ;
-                then 
-                    echo language not available: $2
-                    echo available languages: ${available_languages[*]}
+parse_params () {
+    while [ "$1" != "" ]
+    do
+        case "$1" in
+            -k | --kernel)
+                if [ "$2" = "" ]
+                then
+                    echo -e "${RED}ERROR: No kernel given ${NC}"
                     exit
                 fi
-                languages+=$2
-                shift
-            done
-            shift
-            ;;
-        -p | --package-dir)
-            if [[ $2 =~ ^/ ]]; then 
-                package_dir=$2 
+                kernel=$2
                 shift 2
-            else
-                echo -e "${RED}ERROR: incorrect file path, please use full path ${NC}"
-                exit
-            fi
-            ;;
-        -c | --custom) 
-            while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]] ; do
-                custom+=$2
+                ;;
+            -d | --desktop)
+                DESKTOP=$(echo 0)
                 shift
-            done
-            shift
-            ;;
-        -h | --help)
-            print_help
-            exit
-            ;;
-        *)
-            echo -e "${ORANGE}WARNING: Unknown argument ${NC}\"$1\""
-            shift
-            ;;
-    esac
-done
+                ;;  
+            -s | --server)
+                SERVER=$(0)
+                shift
+                ;;
+            -l | --language) 
+                while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]] ; do
+                    if ! [[ " ${available_languages[*]} " =~ " $2 " ]] ;
+                    then 
+                        echo language not available: $2
+                        echo available languages: ${available_languages[*]}
+                        exit
+                    fi
+                    languages+=$2
+                    shift
+                done
+                shift
+                ;;
+            -p | --package-dir)
+                if [[ $2 =~ ^/ ]]; then 
+                    package_dir=$2 
+                    shift 2
+                else
+                    echo -e "${RED}ERROR: incorrect file path, please use full path ${NC}"
+                    exit
+                fi
+                ;;
+            -c | --custom) 
+                while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]] ; do
+                    custom+=$2
+                    shift
+                done
+                shift
+                ;;
+            -h | --help)
+                print_help
+                exit
+                ;;
+            *)
+                echo -e "${ORANGE}WARNING: Unknown argument ${NC}\"$1\""
+                shift
+                ;;
+        esac
+    done
+}
 
 verify_parameters () {
 if [ $DESKTOP -eq 1 ] && [ $SERVER -eq 1 ];
 then
     echo please specify either desktop or server installation
+    exit
 fi
 }
 
-# accept_parameters () {
-echo "######################################################"
-echo -e "#           ${GREEN}Verify installation parameters${NC}           #"
-echo "######################################################"
+accept_parameters () {
+    echo "######################################################"
+    echo -e "#           ${GREEN}Verify installation parameters${NC}           #"
+    echo "######################################################"
 
-if [ $DESKTOP -eq 0 ];
-then
-    echo Desktop installation
-fi
+    if [ $DESKTOP -eq 0 ];
+    then
+        echo Desktop installation
+    fi
 
-if [ $SERVER -eq 0 ] && [ $DESKTOP -eq 1 ];
-then
-    echo Server installation
-fi
+    if [ $SERVER -eq 0 ] && [ $DESKTOP -eq 1 ];
+    then
+        echo Server installation
+    fi
 
-if ! [ "$KERNEL" = "" ]; 
-then 
-    echo Kernel-version: $KERNEL 
-fi
+    if ! [ "$kernel" = "" ]; 
+    then 
+        echo Kernel-version: $kernel 
+    fi
 
-if ! [ "$languages" = "" ];
-then
-    echo Languages: $languages
-fi
+    if ! [ "$languages" = "" ];
+    then
+        echo Languages: $languages
+    fi
 
-if ! [ "$custom" = "" ];
-then
-    echo Custom/git software: $custom
-fi
+    if ! [ "$custom" = "" ];
+    then
+        echo Custom/git software: $custom
+    fi
 
-if ! [ "$package_dir" = "" ]; 
-then 
-    echo package.txt directory: $package_dir 
-else
-    echo Using default package directory: $package_dir
-fi
+    if ! [ "$package_dir" = "" ]; 
+    then 
+        echo package.txt directory: $package_dir 
+    else
+        echo Using default package directory: $package_dir
+    fi
 
-echo "######################################################"
-read -p "Do you want to continue with install (y/n): " response
+    echo "######################################################"
+    read -p "Do you want to continue with install (y/n): " response
 
-if [[ $response = y* ]] || [[ $response = Y* ]] ;
-then
-    echo Starting installation
-else
-    echo Not installing
-    exit
-fi
+    if [[ $response = y* ]] || [[ $response = Y* ]] ;
+    then
+        echo Starting installation
+    else
+        echo Not installing
+        exit
+    fi
+}
 
 # install () {
 # sudo apt update && sudo apt upgrade
@@ -158,4 +165,5 @@ fi
 # sudo apt install $kernel_version
 # sudo apt install < $packages -y
 
-# main "$@"
+
+main "$@"
