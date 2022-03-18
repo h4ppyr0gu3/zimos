@@ -34,25 +34,24 @@ bash -c "$(wget -qO - '$url')" '' parameters
 
 flags and options
 
-`-k/--kernel [full image name ie: linux-image-5.16.0-4-amd64 ]`
+```
+-k/--kernel [full image name ie: linux-image-5.16.0-4-amd64 ]
 
     upgrades kernel to specified version 
     please ensure the specified version is available in default repo 
 
-`-p/--package-dir [path/to/packages.txt]`
+-p/--package-dir [path/to/packages.txt]
 
     installs packages specified in the file, not necessarily txt
 
-`-d/--desktop` 
+-d/--desktop` 
 
     specifies that the graphical environment will be installed
 
-`-s/--server`
-
+-s/--server`
     specifes no graphical elements will be installed
 
-`-l/--language [languages to install in list or file]`
-
+-l/--language [languages to install in list or file]
     rust 
     ruby
     elixir
@@ -60,10 +59,10 @@ flags and options
     node
     go
 
-`-c/--custom [custom package list from available packages not in apt repo]`
-
+-c/--custom [custom package list from available packages not in apt repo]
     ly display manager
     sirula launcher
+```
 
     
 
