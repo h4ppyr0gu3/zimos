@@ -37,6 +37,7 @@ main () {
     parse_params $@
     verify_parameters
     accept_parameters
+    read_packages    
     install
 }
 
@@ -175,11 +176,16 @@ accept_parameters () {
     fi
 }
 
+read_packages () {
+    readarray -t packages < $package_dir
+}
+
+
 install () {
     sudo apt update && sudo apt upgrade
 
     sudo apt install $kernel_version
-    sudo apt install < $package_dir -y
+    sudo apt install ${packages[@]} -y
 }
 
 main "$@"
