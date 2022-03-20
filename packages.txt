@@ -1,5 +1,4 @@
 sudo
-firefox
 sway
 swayidle
 git
