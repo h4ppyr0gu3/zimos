@@ -1,0 +1,33 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PATTERN_LENGTH_LIMIT	96	/0 for no limit/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	//
+<A-h>	init.vim	/^nnoremap <A-h> <C-W>H$/;"	m
+<A-j>	init.vim	/^inoremap <A-j> <Esc>:m .+1<CR>==gi$/;"	m
+<A-j>	init.vim	/^nnoremap <A-j> <C-W>J$/;"	m
+<A-j>	init.vim	/^vnoremap <A-j> :m '>+1<CR>gv=gv$/;"	m
+<A-k>	init.vim	/^inoremap <A-k> <Esc>:m .-2<CR>==gi$/;"	m
+<A-k>	init.vim	/^nnoremap <A-k> <C-W>K$/;"	m
+<A-k>	init.vim	/^vnoremap <A-k> :m '<-2<CR>gv=gv$/;"	m
+<A-l>	init.vim	/^nnoremap <A-l> <C-W>L$/;"	m
+<C-h>	init.vim	/^nnoremap <C-h> <C-w>h$/;"	m
+<C-j>	init.vim	/^nnoremap <C-j> <C-w>j$/;"	m
+<C-k>	init.vim	/^nnoremap <C-k> <C-w>k$/;"	m
+<C-l>	init.vim	/^nnoremap <C-l> <C-w>l$/;"	m
+MakeTags	init.vim	/^command! MakeTags !ctags\\ -R\\ .$/;"	c
+g:NERDAltDelims_java	init.vim	/^let g:NERDAltDelims_java = 1$/;"	v
+g:NERDCommentEmptyLines	init.vim	/^let g:NERDCommentEmptyLines = 1$/;"	v
+g:NERDCompactSexyComs	init.vim	/^let g:NERDCompactSexyComs = 1$/;"	v
+g:NERDCreateDefaultMappings	init.vim	/^let g:NERDCreateDefaultMappings = 1$/;"	v
+g:NERDCustomDelimiters	init.vim	/^let g:NERDCustomDelimiters = { 'c': { 'left': '\/**','right': '*\/' } }$/;"	v
+g:NERDDefaultAlign	init.vim	/^let g:NERDDefaultAlign = 'left'$/;"	v
+g:NERDSpaceDelims	init.vim	/^let g:NERDSpaceDelims = 1$/;"	v
+g:NERDToggleCheckAllLines	init.vim	/^let g:NERDToggleCheckAllLines = 1$/;"	v
+g:NERDTrimTrailingWhitespace	init.vim	/^let g:NERDTrimTrailingWhitespace = 1$/;"	v
+g:molokai_original	init.vim	/^let g:molokai_original = 1$/;"	v
+gf	init.vim	/^nnoremap gf :vert winc f<cr> $/;"	m

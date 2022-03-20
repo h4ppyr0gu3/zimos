@@ -16,6 +16,8 @@
 # Cyan         0;36     Light Cyan    1;36
 # Light Gray   0;37     White         1;37
 
+
+
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
@@ -27,10 +29,13 @@ DESKTOP=1
 SERVER=1
 kernel=""
 available_languages=( "ruby" "python" )
-available_custom=( "ly" )
+available_custom=( "ly" "slack" "postman" )
 languages=()
 custom=()
 DEBUG=1
+
+source "$current_dir/languages.sh"
+source "$current_dir/custom.sh"
 
 main () {
     echo $user
@@ -202,52 +207,5 @@ apt_install () {
     sudo apt install $kernel_version -y ; sudo apt install ${packages[*]} -y
 }
 
-custom_install () {
-    ly_install
-}
-
-language_install () {
-    ruby_install
-    # crystal_install
-}
-
-ly_install () {
-    if [[ " ly " =~ " ${custom[*]} " ]] ;
-    then 
-        debug "beginning ly installation: cloning repo"
-        git clone --recurse-submodules https://github.com/nullgemm/ly.git
-        cd ly
-        make
-        debug "sudo making install"
-        sudo make install
-        debug "enable ly service"
-        sudo systemctl enable ly.service
-        debug "disable getty tty2 service"
-        sudo systemctl disable getty@tty2.service
-        cd ..
-        debug "removing source code"
-        rm -rf ly/
-    fi
-}
-
-ruby_install () {
-    if [[ " ruby " =~ " ${languages[*]} " ]] ;
-    then
-        debug "rbenv install: cloning repo"
-        git clone https://github.com/rbenv/rbenv.git /home/$user/.rbenv
-        debug "making rbenv"
-        cd /home/$user/.rbenv && src/configure && make -C src
-        debug "adding to path"
-        echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/$user/.bashrc
-        echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/$user/.zshrc
-        debug "rbenv init"
-        /home/$user/.rbenv/bin/rbenv init
-        mkdir /home/$user/.rbenv/plugins
-        cd /home/$user/.rbenv/plugins
-        debug "cloning rbenv ruby-build"
-        git clone https://github.com/rbenv/ruby-build.git 
-        cd
-    fi
-}
 
 main "$@"
