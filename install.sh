@@ -239,7 +239,7 @@ ruby_install () {
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> /home/$user/.zshrc
     debug "rbenv init"
     /home/$user/.rbenv/bin/rbenv init
-    mkdir -p /home/$user/plugins
+    mkdir -p /home/$user/.rbenv/plugins
     debug "cloning rbenv ruby-build"
     git clone https://github.com/rbenv/ruby-build.git /home/$user/plugins/ruby-build
 }
