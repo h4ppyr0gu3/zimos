@@ -192,13 +192,14 @@ accept_parameters () {
 
 read_packages () {
     readarray -t packages < $package_dir
+    debug "packages to be installed: ${packages[*]}"
 }
 
 
 apt_install () {
     sudo apt update && sudo apt upgrade
 
-    sudo apt install $kernel_version -y ; sudo apt install ${packages[@]} -y
+    sudo apt install $kernel_version -y ; sudo apt install ${packages[*]} -y
 }
 
 custom_install () {
