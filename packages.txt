@@ -14,4 +14,11 @@ build-essential
 libpam0g-dev 
 libxcb-xkb-dev
 zsh
+snapd
+qemu-kvm
+libvirt-daemon-system
+docker
+docker-compose
+docker-clean
+podman
 
