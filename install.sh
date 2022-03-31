@@ -1,6 +1,51 @@
 #!/bin/bash
 
-# https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip font file url
+# sh -c 'curl -fLo /home/david/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+# add non-free and contrib to sources.list
+
+# sudo cp -r ./wallpaper /usr/share/backgrounds/wallpapers
+
+
+
+# Postgres
+# sudo su - postgres
+# psql
+#  sudo su - postgres -c "createuser -d -P david" 
+
+# js 
+# sudo apt install npm
+# sudo npm install -g n
+# sudo npm install -g nvm
+# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+
+
+# Screenshot grim + slurp
+# sudo apt install llibcairo2-dev wayland-protocols libwayland-dev libxkbcommon-dev
+# git clone --depth 1 https://github.com/emersion/slurp.git
+# cd slurp
+# meson build
+# ninja -C build
+# install -m 755 build/slurp /usr/local/bin
+# rm -rf slurp
+# git clone --depth 1 https://github.com/emersion/grim.git
+# cd grim
+# meson build
+# ninja -C build
+# install -m 755 build/grim /usr/local/bin
+# rm -rf grim
+# mkdir /home/$user/Screenshots
+
+# Pipewire
+# touch /etc/pipewire/media-session.d/with-pulseaudio
+# cp /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.* /etc/systemd/user/
+# systemctl --user daemon-reload
+# ➜  setup_v2 git:(master) ✗ systemctl --user --now disable pulseaudio.service pulseaudio.socket
+# ➜  setup_v2 git:(master) ✗ systemctl --user --now enable pipewire pipewire-pulse
+# ➜  setup_v2 git:(master) ✗ LANG=C pactl info | grep '^Server Name'
+# Server Name: PulseAudio (on PipeWire 0.3.19)
+# ➜  setup_v2 git:(master) ✗ systemctl --user mask pulseaudio
+# Created symlink /home/david/.config/systemd/user/pulseaudio.service → /dev/null.
+
 # neovim config: ./init.vim
 # wallpaper library: 
 # icon packs: Bonny-Dark-Icons

@@ -61,6 +61,13 @@ flags and options
     sirula launcher
 ```
 
+the custom software is all the github software which is not available through apt or that has config files which are taken from this repo configurable software includes:
+- zsh
+- zsh-autosuggestions
+- postgres
+- snap
+- flatpak
+- nvim
     
 
 

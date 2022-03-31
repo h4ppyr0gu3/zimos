@@ -2,6 +2,9 @@ custom_install () {
     ly_install
     postman_install
     slack_install
+    zsh_install
+    alt_install
+    postgres_install
 }
 
 
@@ -34,7 +37,40 @@ postman_install () {
 slack_install () {
     if [[ " slack " =~ " ${custom[*]} " ]] ;
     then
-        wget https://downloads.slack-edge.com/releases/linux/4.24.0/prod/x64/slack-desktop-4.24.0-amd64.deb 
-        sudo dpkg -i slack-desktop-4.24.0-amd64.deb
+      debug "installing Slack"
+      sudo flatpak install -y --noninteractive slack    
+    fi
+}
+
+zsh_install () {
+    if [[ " zsh " =~ " ${custom[*]} " ]] ;
+    then
+      debug "configuring zsh"
+      debug "installing oh-my-zsh"
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      debug "setting shell to zsh"
+      sudo chsh -s $(which zsh)
+      debug "clone zsh autosuggestions"
+      git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+    fi
+}
+
+alt_install () {
+    if [[ " alt " =~ " ${custom[*]} " ]] ;
+    then
+      debug "configuring flatpak"
+      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+      debug "symlink snap to applications"
+      sudo ln -s /var/lib/snapd/desktop/applications /usr/share/applications/snap
+      debug "symlink flatpak to applications"
+      sudo ln -s /var/lib/flatpak/exports/share/applications /usr/share/applications/flatpak 
+    fi
+}
+
+postgres_install () {
+    if [[ " postgres " =~ " ${custom[*]} " ]] ;
+    then
+      debug "configuring postgres"
+      sudo su - postgres -c "createuser -d -P david" 
     fi
 }
