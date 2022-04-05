@@ -1,4 +1,5 @@
 custom_install () {
+    apt_install
     ly_install
     postman_install
     slack_install
@@ -7,6 +8,11 @@ custom_install () {
     postgres_install
 }
 
+apt_install () {
+  sudo apt update && sudo apt upgrade
+
+  sudo apt install $kernel_version -y ; sudo apt install ${packages[*]} -y
+}
 
 ly_install () {
     if [[ " ly " =~ " ${custom[*]} " ]] ;

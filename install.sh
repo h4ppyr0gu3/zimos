@@ -5,7 +5,9 @@
 
 # sudo cp -r ./wallpaper /usr/share/backgrounds/wallpapers
 
-
+# gebaar input
+# dependencies and make 
+# git clone https://github.com/Coffee2CodeNL/gebaar-libinput
 
 # Postgres
 # sudo su - postgres
@@ -61,196 +63,164 @@
 # Cyan         0;36     Light Cyan    1;36
 # Light Gray   0;37     White         1;37
 
-
-
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
 NC='\033[0m'
 user=$(whoami)
 current_dir=$(pwd)
-package_dir="${current_dir}/packages.txt"
+package_dir="${current_dir}/pkgs.txt"
+ADDITIONAL=1
 DESKTOP=1
 SERVER=1
+DEBUG=1
+DEBIAN=1
+ARCH=1
 kernel=""
 available_languages=( "ruby" "python" )
-available_custom=( "ly" "slack" "postman" )
+available_custom=( "ly" "slack" "postman" "postgres" "zsh" "alt" )
 languages=()
 custom=()
-DEBUG=1
-
-source "$current_dir/languages.sh"
-source "$current_dir/custom.sh"
 
 main () {
-    echo $user
-    echo $package_dir
-    parse_params $@
-    verify_parameters
-    accept_parameters
-    read_packages    
-    apt_install
-    custom_install
-    language_install
+  parse_params $@
+  verify_parameters
+  accept_parameters
+  read_packages    
+  run_install
+  custom_install
+  language_install
 }
 
 debug () {
-    if [ $DEBUG -eq 0 ] ;
-    then
-        echo -e "${ORANGE}DEBUG INFO: $1 ${NC}"
-    fi
+  if [ $DEBUG -eq 0 ]; then
+    echo -e "${ORANGE}DEBUG INFO: $1 ${NC}"
+  fi
 }
 
 print_help () {
-    echo print_help
+  echo print_help
 }
 
 parse_params () {
-    while [ "$1" != "" ]
-    do
-        case "$1" in
-            -k | --kernel)
-                if [ "$2" = "" ]
-                then
-                    echo -e "${RED}ERROR: No kernel given ${NC}"
-                    exit
-                fi
-                kernel=$2
-                shift 2
-                ;;
-            -d | --desktop)
-                DESKTOP=$(echo 0)
-                shift
-                ;;  
-            -s | --server)
-                SERVER=$(0)
-                shift
-                ;;
-            -l | --language) 
-                while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]] ; do
-                    if ! [[ " ${available_languages[*]} " =~ " $2 " ]] ;
-                    then 
-                        echo language not available: $2
-                        echo available languages: ${available_languages[*]}
-                        exit
-                    fi
-                    languages+=$2
-                    shift
-                done
-                shift
-                ;;
-            -p | --package-dir)
-                if [[ $2 =~ ^/ ]]; then 
-                    package_dir=$2 
-                    shift 2
-                else
-                    echo -e "${RED}ERROR: incorrect file path, please use full path ${NC}"
-                    exit
-                fi
-                ;;
-            -c | --custom) 
-                while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]] ; do
-                    custom+=$2
-                    shift
-                done
-                shift
-                ;;
-            --debug)
-                DEBUG=0
-                shift
-                ;;
-            -h | --help)
-                print_help
-                exit
-                ;;
-            *)
-                echo -e "${ORANGE}WARNING: Unknown argument ${NC}\"$1\""
-                shift
-                ;;
-        esac
-    done
+  while [ "$1" != "" ]
+  do
+    case "$1" in
+      -k | --kernel)
+        if [ "$2" = "" ]
+        then
+          echo -e "${RED}ERROR: No kernel given ${NC}" ; exit
+        fi
+        kernel=$2 ; shift 2 ;;
+      -d | --desktop) DESKTOP=0 ; shift ;;  
+      -s | --server) SERVER=0 ; shift ;;
+      -a | --additional) ADDITIONAL=0 ; shift ;;
+      -arch) ARCH=$(0) ; shift ;;
+      -deb) DEBIAN=$(0) ; shift ;;
+      -l | --language) 
+        while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]]; do
+          if ! [[ " ${available_languages[*]} " =~ " $2 " ]]; then 
+            echo language not available: $2
+            echo available languages: ${available_languages[*]}
+            exit
+          fi
+          languages+=$2
+          shift
+        done
+        shift ;;
+      -p | --package-dir)
+        if [[ $2 =~ ^/ ]]; then 
+          package_dir=$2 
+          shift 2
+        else
+          echo -e "${RED}ERROR: incorrect file path, please use full path ${NC}" ; exit
+        fi
+        ;;
+      -c | --custom) 
+        while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]]; do
+          custom+=$2
+          shift
+        done
+        shift ;;
+      --debug) DEBUG=0 ; shift ;;
+      -h | --help) print_help ; exit ;;
+      *) echo -e "${ORANGE}WARNING: Unknown argument ${NC}\"$1\"" ; shift ;;
+    esac
+  done
 }
 
 verify_parameters () {
-if [ $DESKTOP -eq 1 ] && [ $SERVER -eq 1 ];
-then
-    echo please specify either desktop or server installation
-    exit
-fi
-
-
+  if [ $DESKTOP -eq 1 ] && [ $SERVER -eq 1 ] && [ $ADDITIONAL -eq 1 ];
+  then
+    printf "${RED}ERROR: please specify either desktop, server or additional installation${NC}\n" ; exit
+  fi
 }
 
 accept_parameters () {
-    echo "###############################################################################################"
-    echo "###############################################################################################"
-    echo "###############################################################################################"
-    echo -e "###  ${GREEN}\\    /          _     ___                                _ ${NC}                            ###" 
-    echo -e "###  ${GREEN} \\  /  _   _ ._|_\\/    |  _  _ _|_ _ || _ _|_ . _  _    |_) _   _ _ __  _ _|_ _   _ _${NC}  ###"
-    echo -e "###  ${GREEN}  \\/  (/_ |  | | /    _|_| |_>  |_(_|||(_| |_ |(_)| |   |  (_| | (_||||(/_ |_(/_ | _>${NC}  ###"
-    echo -e "###                            ${GREEN}Verify installation parameters${NC}                               ###"
-    echo "###############################################################################################"
-    echo "###############################################################################################"
-    echo "###############################################################################################"
-    printf "\n"
+  echo "###############################################################################################"
+  echo -e "#    ${GREEN}\\    /          _     ___                                _ ${NC}                              #" 
+  echo -e "#    ${GREEN} \\  /  _   _ ._|_\\/    |  _  _ _|_ _ || _ _|_ . _  _    |_) _   _ _ __  _ _|_ _   _ _${NC}    #"
+  echo -e "#    ${GREEN}  \\/  (/_ |  | | /    _|_| |_>  |_(_|||(_| |_ |(_)| |   |  (_| | (_||||(/_ |_(/_ | _>${NC}    #"
+  echo -e "#                              ${GREEN}Verify installation parameters${NC}                                 #"
+  echo "###############################################################################################"
+  printf "\n"
 
-    if [ $DESKTOP -eq 0 ];
-    then
-        echo Desktop installation
-    fi
+  if [ $DESKTOP -eq 0 ]; then
+    echo Desktop installation
+  fi
 
-    if [ $SERVER -eq 0 ] && [ $DESKTOP -eq 1 ];
-    then
-        echo Server installation
-    fi
+  if [ $SERVER -eq 0 ] && [ $DESKTOP -eq 1 ]; then
+    echo Server installation
+  fi
 
-    if ! [ "$kernel" = "" ]; 
-    then 
-        echo Kernel-version: $kernel 
-    fi
+  if [ $ADDITIONAL -eq 0 ]; then 
+    echo Additional software installation
+  fi
 
-    if ! [ "$languages" = "" ];
-    then
-        echo Languages: $languages
-    fi
+  if ! [ "$kernel" = "" ]; then 
+    echo Kernel-version: $kernel 
+  fi
 
-    if ! [ "$custom" = "" ];
-    then
-        echo Custom/git software: $custom
-    fi
+  if ! [ "$languages" = "" ]; then
+    echo Languages: $languages
+  fi
 
-    if ! [ "$package_dir" = "" ]; 
-    then 
-        echo package.txt directory: $package_dir 
+  if ! [ "$custom" = "" ]; then
+    echo Custom/git software: $custom
+  fi
+
+  if [ $ADDITIONAL -eq 1 ]; then
+    if ! [ "$package_dir" = "" ]; then 
+      echo package.txt directory: $package_dir 
     else
-        echo Using default package directory: $package_dir
+      echo Using default package directory: $package_dir
     fi
+  fi
 
-    printf "\n"
-    echo "###############################################################################################"
-    printf "\n"
-    read -p "Do you want to continue with install (y/n): " response
+  printf "\n###############################################################################################\n"
+  read -p "Do you want to continue with install (y/n): " response
 
-    if [[ $response = y* ]] || [[ $response = Y* ]] ;
-    then
-        echo Starting installation
-    else
-        echo Not installing
-        exit
-    fi
+  if [[ $response = y* ]] || [[ $response = Y* ]]; then
+    echo Starting installation
+  else
+    echo Not installing ; exit
+  fi
 }
 
 read_packages () {
-    readarray -t packages < $package_dir
-    debug "packages to be installed: ${packages[*]}"
+  readarray -t packages < $package_dir
+  debug "packages to be installed: ${packages[*]}"
 }
 
-
-apt_install () {
-    sudo apt update && sudo apt upgrade
-
-    sudo apt install $kernel_version -y ; sudo apt install ${packages[*]} -y
+run_install () {
+  if [ $ARCH -eq 1 ]; then 
+    source "$current_dir/languages_arch.sh"
+    source "$current_dir/custom_arch.sh"
+  fi
+  if [ $DEBIAN -eq 1 ]; then 
+    source "$current_dir/languages_debian.sh"
+    source "$current_dir/custom_debian.sh"
+  fi
 }
-
 
 main "$@"

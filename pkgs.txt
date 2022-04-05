@@ -42,3 +42,6 @@ slurp
 grim
 ranger
 feh
+ydotool
+libinput-dev
+libudev-dev
