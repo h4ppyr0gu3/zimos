@@ -71,3 +71,8 @@ the custom software is all the github software which is not available through ap
 - flatpak
 - nvim
     
+# Images
+
+## Foot and ZSH screenshots
+![Foot and ZSH config](https://github.com/h4ppyr0gu3/setup_v2/blob/master/images/foot_zsh.png)
+
