@@ -32,7 +32,11 @@ or
 bash -c "$(wget -qO - '$url')" '' parameters
 ```
 
-flags and options
+# Arch
+
+still under development
+
+# flags and options
 
 ```
 -k/--kernel [full image name ie: linux-image-5.16.0-4-amd64 ]
@@ -49,16 +53,14 @@ flags and options
     specifes no graphical elements will be installed
 
 -l/--language [languages to install in list or file]
-    rust 
     ruby
-    elixir
     python
-    node
-    go
 
 -c/--custom [custom package list from available packages not in apt repo]
     ly display manager
     sirula launcher
+-a/--additional 
+    neither desktop or server but take advantage of the defined installation paths
 ```
 
 the custom software is all the github software which is not available through apt or that has config files which are taken from this repo configurable software includes:
@@ -69,8 +71,3 @@ the custom software is all the github software which is not available through ap
 - flatpak
 - nvim
     
-
-
-
-
-David Rogers
