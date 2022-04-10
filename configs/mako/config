@@ -1,0 +1,13 @@
+markup=1
+actions=1
+
+font=Fira Code 11
+border-radius=3
+background-color=#555555
+text-color=#fdf6e3
+default-timeout=5000
+format=<b>%s</b> <span color="#93a1a1">(%a)</span>\n%b
+
+
+
+
