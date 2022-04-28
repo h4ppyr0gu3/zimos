@@ -23,29 +23,18 @@
 
 # Screenshot grim + slurp
 # sudo apt install llibcairo2-dev wayland-protocols libwayland-dev libxkbcommon-dev
-# git clone --depth 1 https://github.com/emersion/slurp.git
-# cd slurp
-# meson build
-# ninja -C build
-# install -m 755 build/slurp /usr/local/bin
-# rm -rf slurp
-# git clone --depth 1 https://github.com/emersion/grim.git
-# cd grim
-# meson build
-# ninja -C build
-# install -m 755 build/grim /usr/local/bin
-# rm -rf grim
+
 # mkdir /home/$user/Screenshots
 
 # Pipewire
 # touch /etc/pipewire/media-session.d/with-pulseaudio
 # cp /usr/share/doc/pipewire/examples/systemd/user/pipewire-pulse.* /etc/systemd/user/
 # systemctl --user daemon-reload
-# ➜  setup_v2 git:(master) ✗ systemctl --user --now disable pulseaudio.service pulseaudio.socket
-# ➜  setup_v2 git:(master) ✗ systemctl --user --now enable pipewire pipewire-pulse
-# ➜  setup_v2 git:(master) ✗ LANG=C pactl info | grep '^Server Name'
+# setup_v2 git:(master) systemctl --user --now disable pulseaudio.service pulseaudio.socket
+# setup_v2 git:(master) systemctl --user --now enable pipewire pipewire-pulse
+# setup_v2 git:(master) LANG=C pactl info | grep '^Server Name'
 # Server Name: PulseAudio (on PipeWire 0.3.19)
-# ➜  setup_v2 git:(master) ✗ systemctl --user mask pulseaudio
+# setup_v2 git:(master) systemctl --user mask pulseaudio
 # Created symlink /home/david/.config/systemd/user/pulseaudio.service → /dev/null.
 
 # neovim config: ./init.vim
@@ -63,6 +52,7 @@
 # Cyan         0;36     Light Cyan    1;36
 # Light Gray   0;37     White         1;37
 
+BLUE='\033[0;34m'
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
@@ -77,7 +67,7 @@ DEBUG=1
 DEBIAN=1
 ARCH=1
 kernel=""
-available_languages=( "ruby" "python" )
+available_languages=( "ruby" "python" "rust" "crystal" "go" )
 available_custom=( "ly" "slack" "postman" "postgres" "zsh" "alt" )
 languages=()
 custom=()
@@ -115,8 +105,8 @@ parse_params () {
       -d | --desktop) DESKTOP=0 ; shift ;;  
       -s | --server) SERVER=0 ; shift ;;
       -a | --additional) ADDITIONAL=0 ; shift ;;
-      -arch) ARCH=$(0) ; shift ;;
-      -deb) DEBIAN=$(0) ; shift ;;
+      -arch) ARCH=0 ; shift ;;
+      -deb) DEBIAN=0 ; shift ;;
       -l | --language) 
         while [[ $2 =~ ^[a-zA-Z]+$ ]] && [[ $2 != "" ]]; do
           if ! [[ " ${available_languages[*]} " =~ " $2 " ]]; then 
@@ -213,11 +203,13 @@ read_packages () {
 }
 
 run_install () {
-  if [ $ARCH -eq 1 ]; then 
+  if [[ $ARCH -eq 0 ]]; then 
+    printf "${NC}starting on ${BLUE}ARCH ${NC}installation\n"
     source "$current_dir/languages_arch.sh"
     source "$current_dir/custom_arch.sh"
   fi
-  if [ $DEBIAN -eq 1 ]; then 
+  if [[ $DEBIAN -eq 0 ]]; then 
+    printf "${NC}starting on ${RED}DEBIAN ${NC}installation\n"
     source "$current_dir/languages_debian.sh"
     source "$current_dir/custom_debian.sh"
   fi
