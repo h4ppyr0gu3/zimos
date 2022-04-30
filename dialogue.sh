@@ -28,17 +28,10 @@ package_file=""
 custom_file=""
 
 main () {
-  clear
   print_logo
   set_params
   verify_params
   install
-}
-
-debug () {
-  if [ $DEBUG -eq 1 ]; then
-    echo -e "${ORANGE}DEBUG INFO: $1 ${NC}"
-  fi
 }
 
 print_help () {
@@ -68,8 +61,11 @@ print_logo () {
 set_base () {
   printf "Select installation for:\n1) ${BLUE}ARCH${NC}\n2) ${RED}DEBIAN${NC}\n"
   read -p "choice: " inst
-  if [ $inst -eq 1 ]; then ARCH=1; fi
-  if [ $inst -eq 2 ]; then DEBIAN=1; fi
+  case "$inst" in
+    1) ARCH=1 ;;
+    2) DEBIAN=1;;
+    *) echo no distribution passed or unknown option; exit ;;
+  esac
 }
 
 set_pkg_file () {

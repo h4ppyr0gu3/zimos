@@ -16,3 +16,66 @@ pacman_install () {
   sudo pacman -Syu ${packages[*]}
 }
 
+custom_install () {
+  for i in "${custom[@]}"; do
+    $i
+  done
+}
+
+rbenv () {
+  echo rbenv install
+}
+
+crystal () {
+}
+
+rust () {
+}
+
+postman () {
+}
+
+ly () {
+}
+
+slack () {
+  echo slack function
+}
+
+authy () {
+}
+
+teamviewer () {
+}
+
+###### CONFIGURE ######
+
+zsh () {
+}
+
+alacritty () {
+}
+
+nvim () {
+}
+
+scripts () {
+}
+
+qutebrowser () {
+}
+
+nnn () {
+}
+
+ranger () {
+}
+
+sway () {
+}
+
+mako () {
+}
+
+neomutt () {
+}
