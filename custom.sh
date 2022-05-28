@@ -1,13 +1,3 @@
-custom_packages () {
-  mkdir -p $HOME/AUR
-  pac_install fakeroot git
-  if [[ " asdf " =~ " ${custom[*]} " ]]; then asdf; fi
-  if [[ " ly " =~ " ${custom[*]} " ]]; then ly; fi
-  if [[ " slack " =~ " ${custom[*]} " ]]; then slack; fi
-  if [[ " sway " =~ " ${custom[*]} " ]]; then sway; fi
-  if [[ " zsh " =~ " ${custom[*]} " ]]; then zsh; fi
-}
-
 aur_clone () {
   cd $HOME/AUR
   pac_install git
@@ -65,3 +55,18 @@ zsh () {
   git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
   curl https://raw.githubusercontent.com/h4ppyr0gu3/dotfiles/master/.zshrc -o $HOME/.zshrc
 }
+
+custom_packages () {
+  mkdir -p $HOME/AUR
+  pac_install fakeroot git
+  echo asdf
+  echo ${custom[@]}
+  echo ${custom[*]}
+  echo ${#custom[*]}
+  [[ " ${custom[*]} " =~ " asdf " ]] && asdf;
+  [[ " ${custom[*]} " =~ " ly " ]] && ly;
+  [[ " ${custom[*]} " =~ " slack " ]] && slack;
+  [[ " ${custom[*]} " =~ " sway " ]] && sway;
+  [[ " ${custom[*]} " =~ " zsh " ]] && zsh;
+}
+

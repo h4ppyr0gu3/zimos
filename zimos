@@ -51,7 +51,8 @@ print_help () {
 }
 
 pac_install () {
-  sudo pacman -Sy --needed --noconfirm $@
+  # sudo pacman -Sy --needed --noconfirm $@
+  echo $@
 }
 
 print_logo () {
@@ -85,7 +86,7 @@ read_custom () {
 
 install_packages () {
   echo -e "Installing Packages from ${RED}$package_dir${NC}"
-  # sudo pacman -Syu ${packages[*]}
+  pac_install ${packages[*]}
 }
 
 install_custom () {
@@ -98,7 +99,7 @@ uninstall () {
   read_custom
   read_packages
   echo uninstalling
-  # sudo pacman -R ${packages[*]}
+  sudo pacman -R ${packages[*]}
 }
 
 if [ $# -gt 0 ]; then
