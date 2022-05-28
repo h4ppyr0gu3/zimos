@@ -1,6 +1,6 @@
 aur_clone () {
   cd $HOME/AUR
-  pac_install git
+  pac_install git patch
   files_before=($(ls -f))
   git clone $1
   files_after=($(ls -f))
@@ -34,17 +34,17 @@ sway () {
   pac_install sway grim slurp neovim ranger
   git clone https://github.com/h4ppyr0gu3/dotfiles.git
   aur_clone https://aur.archlinux.org/libinput-gestures.git
-  mv -rf ./dotfiles/sway/ $HOME/.config/sway
-  mv -rf ./dotfiles/scripts/ $HOME/.config/scripts
-  mv -rf ./dotfiles/qutebrowser/ $HOME/.config/qutebrowser
-  mv -rf ./dotfiles/alacritty/ $HOME/.config/alacritty
-  mv -rf ./dotfiles/nvim/ $HOME/.config/nvim
+  mv -f ./dotfiles/sway/ $HOME/.config/sway
+  mv -f ./dotfiles/scripts/ $HOME/.config/scripts
+  mv -f ./dotfiles/qutebrowser/ $HOME/.config/qutebrowser
+  mv -f ./dotfiles/alacritty/ $HOME/.config/alacritty
+  mv -f ./dotfiles/nvim/ $HOME/.config/nvim
   mv ./dotfiles/.libinput-gestures.conf $HOME/.config/.libinput-gestures.conf
-  mv -rf ./dotfiles/mako/ $HOME/.config/mako
-  mv -rf ./dotfiles/sounds/ $HOME/.config/sounds
-  mv -rf ./dotfiles/ranger/ $HOME/.config/ranger
-  mv -rf ./dotfiles/wallpapers/ $HOME/.config/wallpapers
-  rm -rf dotfiles
+  mv -f ./dotfiles/mako/ $HOME/.config/mako
+  mv -f ./dotfiles/sounds/ $HOME/.config/sounds
+  mv -f ./dotfiles/ranger/ $HOME/.config/ranger
+  mv -f ./dotfiles/wallpapers/ $HOME/.config/wallpapers
+  rm -f dotfiles
   mkdir -p $HOME/Screenshots
 }
 
