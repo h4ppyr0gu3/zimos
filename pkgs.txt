@@ -24,3 +24,4 @@ slurp
 grim
 ranger
 feh
+patch
