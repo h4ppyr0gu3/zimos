@@ -51,7 +51,7 @@ print_help () {
 }
 
 pac_install () {
-  # sudo pacman -Sy --needed --noconfirm $@
+  sudo pacman -Sy --needed --noconfirm $@
   echo $@
 }
 

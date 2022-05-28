@@ -1,6 +1,6 @@
 aur_clone () {
   cd $HOME/AUR
-  pac_install git patch
+  pac_install git patch make
   files_before=($(ls -f))
   git clone $1
   files_after=($(ls -f))
@@ -32,7 +32,7 @@ virtualization () {
 
 sway () {
   pac_install sway grim slurp neovim ranger
-  git clone https://github.com/h4ppyr0gu3/dotfiles.git
+  git clone https://github.com/h4ppyr0gu3/dotfiles.git ./dotfiles
   aur_clone https://aur.archlinux.org/libinput-gestures.git
   mv -f ./dotfiles/sway/ $HOME/.config/sway
   mv -f ./dotfiles/scripts/ $HOME/.config/scripts
