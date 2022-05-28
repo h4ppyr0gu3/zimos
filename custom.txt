@@ -1,1 +1,5 @@
-rbenv
+asdf
+ly
+slack
+sway
+zsh

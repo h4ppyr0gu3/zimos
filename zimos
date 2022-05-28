@@ -50,6 +50,10 @@ print_help () {
   echo "     although it can be extended through the packages"
 }
 
+pac_install () {
+  sudo pacman -Sy --needed --noconfirm $@
+}
+
 print_logo () {
   printf "\n"
   COLUMNS=$(tput cols) 

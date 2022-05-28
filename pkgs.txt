@@ -17,14 +17,11 @@ wofi
 curl
 fonts-noto-color-emoji
 firmware-iwlwifi
-bluez
-bluez-tools
-bluez-source
 bluez-firmware
-bluez-cups
+bluetoothctl
 upower
 wl-clipboard
-network-manager
+networkmanager
 libspa-0.2-jack
 libspa-0.2-bluetooth
 pipewire-audio-client-libraries
