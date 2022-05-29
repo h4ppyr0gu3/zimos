@@ -39,13 +39,15 @@ sway () {
   mv -f ./dotfiles/qutebrowser/ $HOME/.config/qutebrowser
   mv -f ./dotfiles/alacritty/ $HOME/.config/alacritty
   mv -f ./dotfiles/nvim/ $HOME/.config/nvim
-  mv ./dotfiles/.libinput-gestures.conf $HOME/.config/.libinput-gestures.conf
+  mv -f ./dotfiles/libinput-gestures.conf $HOME/.config/libinput-gestures.conf
   mv -f ./dotfiles/mako/ $HOME/.config/mako
   mv -f ./dotfiles/sounds/ $HOME/.config/sounds
   mv -f ./dotfiles/ranger/ $HOME/.config/ranger
   mv -f ./dotfiles/wallpapers/ $HOME/.config/wallpapers
-  rm -f dotfiles
+  rm -rf ./dotfiles
   mkdir -p $HOME/Screenshots
+  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 }
 
 zsh () {
