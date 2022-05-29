@@ -32,7 +32,7 @@ main () {
 }
 
 print_help () {
-  echo -e "Welcome to the ${GREEN}ZimOS${NC} installer"
+  echo -e "Welcome to the ${GREEN}ZimOS${NC} installation script"
   echo ""
   echo This expects you to:
   echo -e "- be running an ${BLUE}ARCH${NC} based distro"

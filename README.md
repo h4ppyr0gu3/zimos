@@ -1,78 +1,46 @@
-# this repository is a snapshot of my system in case of the unthinkable
+# ZimOS
 
-the script will install and set all the defaults and my preferences
-and also because i tend to break it quite often
-
-# Debian
-
-to add the created user to the sudoers file type the following command
-as root user where $user is your user name 
-
-``` bash 
-apt install sudo -y
-echo "$user ALL=(ALL:ALL) ALL" >> /etc/sudoers.d/$user 
-```
-
-copy the packages.txt file and edit it how you would like
-
-``` bash
-wget url -o packages.txt
-```
-
-run the install script in the same directory as the package.txt file
-or pass the packages flag to the script with the directory of the packages.txt file
-
-``` bash 
-sudo wget url -o - | sh 
-```
-
-or
-
-``` bash
-bash -c "$(wget -qO - '$url')" '' parameters
-```
-
-# Arch
-
-still under development
-
-# flags and options
+The script will install and set all the defaults and my preferences
 
 ```
--k/--kernel [full image name ie: linux-image-5.16.0-4-amd64 ]
-    upgrades kernel to specified version 
-    please ensure the specified version is available in default repo 
+Welcome to the ZimOS installation script
 
--p/--package-dir [path/to/packages.txt]
-    installs packages specified in the file, not necessarily txt
+This expects you to:
+- be running an ARCH based distro
+- have pkgs.txt in the directory you run this script from
+- have custom.txt in the directory you run this script from
 
--d/--desktop 
-    specifies that the graphical environment will be installed
+Usage: ./zimos.sh [OPTION]
+Example: './zimos.sh i'
+OPTIONS:
+    -i, --install, i, install         Install packages from files
+    -u, --uninstall, u, uninstall     Uninstall packages from files
+    -h, --help, h, help               Print this help
 
--s/--server
-    specifes no graphical elements will be installed
-
--l/--language [languages to install in list or file]
-    ruby
-    python
-
--c/--custom [custom package list from available packages not in apt repo]
-    ly display manager
-    sirula launcher
--a/--additional 
-    neither desktop or server but take advantage of the defined installation paths
+N.B. This is a minimal install to have a working Desktop Environment
+     although it can be extended through the packages
 ```
 
-the custom software is all the github software which is not available through apt or that has config files which are taken from this repo configurable software includes:
+The minimal packages required to be installed are in the `pkgs.txt` and additional pre-configured packages are in `custom.txt`.
+There are several preconfigured options that can be put into the `custom.txt` file:
+- asdf
+- ly
+- slack
+- sway
+- virtualization (**NB.** Not implemented yet)
+- pipewire (**NB.** Not implemented yet)
 - zsh
-- zsh-autosuggestions
-- postgres
-- snap
-- flatpak
-- nvim
-    
-# Images
 
-## Foot and ZSH screenshots
-![Foot and ZSH config](https://github.com/h4ppyr0gu3/setup_v2/blob/master/images/foot_zsh.png)
+All listings in the `pkgs.txt` file have to be available in the pacman repository to be installed
 
+## Installation
+
+```bash
+git clone https://github.com/h4ppyr0gu3/setup_v2
+cd setup_v2 
+./zimos i
+```
+
+## Contributing
+
+If you'd like additional custom configurations please add them in the `custom.sh` file and update the README, then create a Pull Request
