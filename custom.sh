@@ -30,10 +30,16 @@ virtualization () {
   echo virtualization env
 }
 
+pipewire () {
+  echo handle pipewire and wireplumber
+  pac_install pipewire wireplumber
+}
+
 sway () {
-  pac_install sway grim slurp neovim ranger
+  pac_install sway grim slurp neovim ranger ctags ripgrep fzf
   git clone https://github.com/h4ppyr0gu3/dotfiles.git ./dotfiles
   aur_clone https://aur.archlinux.org/libinput-gestures.git
+  aur_clone https://aur.archlinux.org/lf.git
   mv -f ./dotfiles/sway/ $HOME/.config/sway
   mv -f ./dotfiles/scripts/ $HOME/.config/scripts
   mv -f ./dotfiles/qutebrowser/ $HOME/.config/qutebrowser
@@ -51,24 +57,22 @@ sway () {
 }
 
 zsh () {
-  echo zsh
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
   sudo chsh -s $(which zsh)
   git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+  git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin
   curl https://raw.githubusercontent.com/h4ppyr0gu3/dotfiles/master/.zshrc -o $HOME/.zshrc
 }
 
 custom_packages () {
   mkdir -p $HOME/AUR
   pac_install fakeroot git
-  echo asdf
-  echo ${custom[@]}
-  echo ${custom[*]}
-  echo ${#custom[*]}
   [[ " ${custom[*]} " =~ " asdf " ]] && asdf;
   [[ " ${custom[*]} " =~ " ly " ]] && ly;
+  [[ " ${custom[*]} " =~ " pipewire " ]] && pipewire;
   [[ " ${custom[*]} " =~ " slack " ]] && slack;
   [[ " ${custom[*]} " =~ " sway " ]] && sway;
+  [[ " ${custom[*]} " =~ " virtualization " ]] && virtualization;
   [[ " ${custom[*]} " =~ " zsh " ]] && zsh;
 }
 
