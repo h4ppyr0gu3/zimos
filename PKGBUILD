@@ -10,17 +10,17 @@ makedepends=('git' 'curl')
 depends=(
 'sway' 'swaylock' 'swaybg' 'neovim' 'flatpak' 'firefox-developer-edition' 'alacritty'
 'nautilus' 'qutebrowser' 'bluez' 'wireplumber' 'zsh' 'w3m' 'htop' 'gdb' 'swayidle'
-'slurp' 'grim' 'ripgrep' 'fzf' 'networkmanager' 'mako' 'jq' 'curl' 'brightnessctl'
-'asciinema' 'cronie' 'ncdu' 'net-tools' 'docker' 'docker-compose' 'neofetch' 'git'
+'slurp' 'grim' 'ripgrep' 'fzf' 'networkmanager' 'mako' 'jq' 'brightnessctl' 'tlp'
+'asciinema' 'cronie' 'ncdu' 'net-tools' 'docker' 'docker-compose' 'neofetch'
 'playerctl' 'net-tools' 'nmap' 'traceroute' 'aircrack-ng' 'pipewire' 'pipewire-pulse'
 'qbittorrent' 'valgrind' 'vlc' 'mpv' 'wl-clipboard' 'xdg-desktop-portal-wlr' 'sudo'
 'xdg-desktop-portal' 'man-db' 'mokutil' 'lsof' 'exa' 'nginx' 'kubectl' 'grpc' 
 'gnome-calculator' 'wireshark-qt' 'feh' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
-'rsync' 'tlp' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler'
+'rsync' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler'
 )
 source=(
-    "git+https://github.com/h4ppyr0gu3/dotfiles2.git"
+    "git+https://github.com/h4ppyr0gu3/dotfiles.git"
     )
 sha256sums=('SKIP')
 
@@ -76,9 +76,8 @@ install_zsh() {
 }
 
 package() {
-  rm -rf $HOME/.config
-  mv $srcdir/dotfiles2/.config $HOME/.config
-  mv $srcdir/dotfiles2/.zshrc $HOME/.zshrc
-  install -Dm644 $srcdir/dotfiles2/LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  mv $srcdir/dotfiles/.zshrc $HOME/.zshrc
+  cp -r $srcdir/dotfiles/.config/ $HOME/.config 
   /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME remote set-url origin git@github.com:h4ppyr0gu3/dotfiles
+  install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
