@@ -25,7 +25,13 @@ source=(
 sha256sums=('SKIP')
 
 
-install=install.sh
+install=install
+
+# next steps: 
+# add environment variables to environment
+# set xdg-mime defaults
+# initialize bare repo and pull config files instead of moving them manually
+# configure global git settings
 
 prepare() {
   if [ -f $HOME/.aur ]; then
