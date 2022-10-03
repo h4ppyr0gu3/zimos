@@ -1,6 +1,6 @@
 # ZimOS
 
-*N.B.* this will remove all your dotfiles and overwrite them, this is a *dictatorship*
+**N.B.** this will remove all your dotfiles and overwrite them, this is a **dictatorship**
 
 to install the dot files 
 
