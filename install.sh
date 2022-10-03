@@ -21,10 +21,8 @@ post_install() {
 
 ## arg 1:  the new package version
 ## arg 2:  the old package version
-pre_upgrade() {
-  rm -rf $HOME/.config
-  rm -rf $HOME/.zshrc
-}
+#pre_upgrade() {
+#}
 
 ## arg 1:  the new package version
 ## arg 2:  the old package version
@@ -34,6 +32,7 @@ post_upgrade() {
 }
 
 print_logo() {
+  printf "\n"
   printf "\n"
   COLUMNS=$(tput cols) 
   line1=" oooooooooooo ooooo ooo        ooooo   .oooooo.    .oooooo..o "
