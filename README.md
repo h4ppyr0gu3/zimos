@@ -1,5 +1,15 @@
 # ZimOS
 
+*N.B.* this will remove all your dotfiles and overwrite them, this is a *dictatorship*
+
+to install the dot files 
+
+```bash
+git clone git@github.com:h4ppyr0u3.one/zimos.git
+cd zimos
+makepkg -sic
+```
+
 The script will install and set all the defaults and my preferences
 
 ```
