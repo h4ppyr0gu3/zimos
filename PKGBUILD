@@ -74,4 +74,5 @@ package() {
   mv $srcdir/dotfiles2/.config $HOME/.config
   mv $srcdir/dotfiles2/.zshrc $HOME/.zshrc
   install -Dm644 $srcdir/dotfiles2/LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME remote set-url origin git@github.com:h4ppyr0gu3/dotfiles
 }
