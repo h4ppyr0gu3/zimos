@@ -24,11 +24,7 @@ source=(
     )
 sha256sums=('SKIP')
 
-
 install=install
-
-# next steps: 
-# add environment variables to environment
 
 prepare() {
 
@@ -51,6 +47,11 @@ package() {
   install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
   source $HOME/.zshrc
 }
+
+###############################################
+# These are all custom installation functions #
+#       The PKGBUILD file ends here           #
+###############################################
 
 aur_packages() {
   aur_clone https://aur.archlinux.org/asdf-vm.git
