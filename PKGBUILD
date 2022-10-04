@@ -6,7 +6,7 @@ pkgdesc="the presidents installation script"
 arch=('x86_64')
 url="https://github.com/h4ppyr0gu3/zimos"
 license=('custom:WTFPL')
-makedepends=('git' 'curl')
+makedepends=('git' 'curl' 'rsync')
 depends=(
 'sway' 'swaylock' 'swaybg' 'neovim' 'flatpak' 'firefox-developer-edition' 'alacritty'
 'nautilus' 'qutebrowser' 'bluez' 'wireplumber' 'zsh' 'w3m' 'htop' 'gdb' 'swayidle'
@@ -17,7 +17,7 @@ depends=(
 'xdg-desktop-portal' 'man-db' 'mokutil' 'lsof' 'exa' 'nginx' 'kubectl' 'grpc' 
 'gnome-calculator' 'wireshark-qt' 'feh' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
-'rsync' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler'
+'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler'
 )
 source=(
     "git+https://github.com/h4ppyr0gu3/dotfiles.git"
@@ -76,8 +76,35 @@ install_zsh() {
 }
 
 package() {
-  mv $srcdir/dotfiles/.zshrc $HOME/.zshrc
-  cp -r $srcdir/dotfiles/.config/ $HOME/.config 
-  /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME remote set-url origin git@github.com:h4ppyr0gu3/dotfiles
+  cp $srcdir/dotfiles/.zshrc $HOME/.zshrc
+  rsync -a $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
+  rsync -a $srcdir/dotfiles/.config/alacritty $HOME/.config/alacritty
+  rsync -a $srcdir/dotfiles/.config/cronjobs $HOME/.config/cronjobs
+  rsync -a $srcdir/dotfiles/.config/mako $HOME/.config/nvim
+  rsync -a $srcdir/dotfiles/.config/qutebrowser $HOME/.config/qutebrowser
+  rsync -a $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
+  rsync -a $srcdir/dotfiles/.config/sounds $HOME/.config/sounds
+  rsync -a $srcdir/dotfiles/.config/sway $HOME/.config/sway
+  rsync -a $srcdir/dotfiles/.config/wallpapers $HOME/.config/wallpapers
+  rsync -a $srcdir/dotfiles/.config/libinput-gestures.conf $HOME/.config/libiput-gestures.conf
+  rsync -a $srcdir/dotfiles/.config/waybar $HOME/.config/waybar
+  rsync -a $srcdir/dotfiles/.config/zathura $HOME/.config/zathura
+  rsync -a $srcdir/dotfiles/.config/alias.sh $HOME/.config/alias.sh
+  rsync -a $srcdir/dotfiles/.config/functions.sh $HOME/.config/functions.sh
+
+
+  if [ -f $HOME/.cfg ]; then
+    git init $HOME/.cfg --bare
+    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
+    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME remote set-url origin git@github.com:h4ppyr0gu3/dotfiles
+    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME pull origin master
+    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add $HOME/.zshrc \
+    $HOME/.config/scripts $HOME/.config/alacritty $HOME/.config/cronjobs \
+    $HOME/.config/nvim $HOME/.config/qutebrowser $HOME/.config/scripts \
+    $HOME/.config/sounds $HOME/.config/sway $HOME/.config/wallpapers \
+    $HOME/.config/libiput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura \
+    $HOME/.config/alias.sh $HOME/.config/functions.sh
+  fi
+
   install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
