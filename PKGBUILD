@@ -28,7 +28,7 @@ install=install
 
 prepare() {
 
-  if [ -f $HOME/.aur ]; then
+  if [ -d $HOME/.aur ]; then
     mkdir $HOME/.aur
     aur_packages
   fi
@@ -45,7 +45,6 @@ prepare() {
 package() {
   print_logo
   install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-  source $HOME/.zshrc
 }
 
 ###############################################
@@ -115,7 +114,7 @@ flatpak_packages() {
 prepare_dotfiles() {
   rm -rf $HOME/.config/*.old
 
-  [ -d old ] && mv $HOME/.zshrc                            $HOME/.zshrc.old
+  [ -f $HOME/.zshrc ] && mv $HOME/.zshrc       $HOME/.zshrc.old
   [ -d $HOME/.config/scripts ] && mv $HOME/.config/scripts   $HOME/.config/scripts.old
   [ -d $HOME/.config/alacritty ] && mv $HOME/.config/alacritty $HOME/.config/alacritty.old
   [ -d $HOME/.config/cronjobs ] && mv $HOME/.config/cronjobs  $HOME/.config/cronjobs.old
@@ -128,16 +127,16 @@ prepare_dotfiles() {
   [ -d $HOME/.config/libinput-gestures.conf ] && mv $HOME/.config/libinput-gestures.conf  $HOME/.config/libinput-gestures.old
   [ -d $HOME/.config/waybar ] && mv $HOME/.config/waybar      $HOME/.config/waybar.old
   [ -d $HOME/.config/zathura ] && mv $HOME/.config/zathura     $HOME/.config/zathura.old
-  [ -d $HOME/.config/zsh ] && mv $HOME/.config/zsh         $HOME/.config/zsh.old
+  [ -d $HOME/.config/zsh ] && mv $HOME/.config/zsh  $HOME/.config/zsh.old
 }
 
 move_dotfiles() {
   mv $srcdir/dotfiles/.zshrc $HOME/.zshrc
   mv $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
   mv $srcdir/dotfiles/.config/alacritty $HOME/.config/alacritty
+  mv $srcdir/dotfiles/.config/nvim $HOME/.config/nvim
   mv $srcdir/dotfiles/.config/cronjobs $HOME/.config/cronjobs
   mv $srcdir/dotfiles/.config/mako $HOME/.config/mako
-  mv $srcdir/dotfiles/.config/nvim $HOME/.config/nvim
   mv $srcdir/dotfiles/.config/qutebrowser $HOME/.config/qutebrowser
   mv $srcdir/dotfiles/.config/sounds $HOME/.config/sounds
   mv $srcdir/dotfiles/.config/sway $HOME/.config/sway
