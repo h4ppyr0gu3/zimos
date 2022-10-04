@@ -29,8 +29,6 @@ install=install
 
 # next steps: 
 # add environment variables to environment
-# set xdg-mime defaults
-# initialize bare repo and pull config files instead of moving them manually
 # configure global git settings
 
 prepare() {
@@ -77,21 +75,33 @@ install_zsh() {
 
 package() {
   cp $srcdir/dotfiles/.zshrc $HOME/.zshrc
-  rsync -a $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
-  rsync -a $srcdir/dotfiles/.config/alacritty $HOME/.config/alacritty
-  rsync -a $srcdir/dotfiles/.config/cronjobs $HOME/.config/cronjobs
-  rsync -a $srcdir/dotfiles/.config/mako $HOME/.config/nvim
-  rsync -a $srcdir/dotfiles/.config/qutebrowser $HOME/.config/qutebrowser
-  rsync -a $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
-  rsync -a $srcdir/dotfiles/.config/sounds $HOME/.config/sounds
-  rsync -a $srcdir/dotfiles/.config/sway $HOME/.config/sway
-  rsync -a $srcdir/dotfiles/.config/wallpapers $HOME/.config/wallpapers
-  rsync -a $srcdir/dotfiles/.config/libinput-gestures.conf $HOME/.config/libiput-gestures.conf
-  rsync -a $srcdir/dotfiles/.config/waybar $HOME/.config/waybar
-  rsync -a $srcdir/dotfiles/.config/zathura $HOME/.config/zathura
-  rsync -a $srcdir/dotfiles/.config/alias.sh $HOME/.config/alias.sh
-  rsync -a $srcdir/dotfiles/.config/functions.sh $HOME/.config/functions.sh
+  mv $HOME/.config/scripts                   $HOME/.config/scripts.old
+  mv $HOME/.config/alacritty                 $HOME/.config/alacritty.old
+  mv $HOME/.config/cronjobs                  $HOME/.config/cronjobs.old
+  mv $HOME/.config/nvim                      $HOME/.config/nvim.old
+  mv $HOME/.config/qutebrowser               $HOME/.config/qutebrowser.old
+  mv $HOME/.config/scripts                   $HOME/.config/scripts.old
+  mv $HOME/.config/sounds                    $HOME/.config/sounds.old
+  mv $HOME/.config/sway                      $HOME/.config/sway.old
+  mv $HOME/.config/wallpapers                $HOME/.config/wallpapers.old
+  mv $HOME/.config/libinput-gestures.conf    $HOME/.config/libinput-gestures.old
+  mv $HOME/.config/waybar                    $HOME/.config/waybar.old
+  mv $HOME/.config/zathura                   $HOME/.config/zathura.old
+  mv $HOME/.config/zsh                       $HOME/.config/zsh.old
 
+  mv $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
+  mv $srcdir/dotfiles/.config/alacritty $HOME/.config/alacritty
+  mv $srcdir/dotfiles/.config/cronjobs $HOME/.config/cronjobs
+  mv $srcdir/dotfiles/.config/mako $HOME/.config/nvim
+  mv $srcdir/dotfiles/.config/qutebrowser $HOME/.config/qutebrowser
+  mv $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
+  mv $srcdir/dotfiles/.config/sounds $HOME/.config/sounds
+  mv $srcdir/dotfiles/.config/sway $HOME/.config/sway
+  mv $srcdir/dotfiles/.config/wallpapers $HOME/.config/wallpapers
+  mv $srcdir/dotfiles/.config/libinput-gestures.conf $HOME/.config/libiput-gestures.conf
+  mv $srcdir/dotfiles/.config/waybar $HOME/.config/waybar
+  mv $srcdir/dotfiles/.config/zathura $HOME/.config/zathura
+  mv $srcdir/dotfiles/.config/zsh $HOME/.config/zsh
 
   if [ -f $HOME/.cfg ]; then
     git init $HOME/.cfg --bare
@@ -103,7 +113,7 @@ package() {
     $HOME/.config/nvim $HOME/.config/qutebrowser $HOME/.config/scripts \
     $HOME/.config/sounds $HOME/.config/sway $HOME/.config/wallpapers \
     $HOME/.config/libiput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura \
-    $HOME/.config/alias.sh $HOME/.config/functions.sh
+    $HOME/.config/zsh
   fi
 
   install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"

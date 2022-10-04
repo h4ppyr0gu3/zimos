@@ -21,14 +21,45 @@ post_install() {
 
 ## arg 1:  the new package version
 ## arg 2:  the old package version
-#pre_upgrade() {
-#}
+pre_upgrade() {
+  rm $HOME/.config/scripts.old
+  rm $HOME/.config/alacritty.old
+  rm $HOME/.config/cronjobs.old
+  rm $HOME/.config/nvim.old
+  rm $HOME/.config/qutebrowser.old
+  rm $HOME/.config/scripts.old
+  rm $HOME/.config/sounds.old
+  rm $HOME/.config/sway.old
+  rm $HOME/.config/wallpapers.old
+  rm $HOME/.config/libinput-gestures.old
+  rm $HOME/.config/waybar.old
+  rm $HOME/.config/zathura.old
+  rm $HOME/.config/zsh.old
+}
 
 ## arg 1:  the new package version
 ## arg 2:  the old package version
 post_upgrade() {
   nvim --headless -c +PackerInstall +q
+  configure_git
   print_logo
+}
+
+configure_git() {
+  git config --global alias.co checkout
+  git config --global alias.st status
+  git config --global alias.br branch
+  git config --global push.default simple
+  git config --global pull.rebase true
+  git config --global fetch.prune true
+  git config --global core.pager 'less -x2'
+  git config --global core.editor 'nvim'
+  git config --global --add merge.ff false
+  git config --global --add pull.ff only
+  git config --global grep.lineNumber true
+  git config --global diff.wsErrorHighlight all
+  git config --global alias.conflicts diff --name-only --diff-filter=U
+  git config --global alias.change diff --name-only
 }
 
 print_logo() {
