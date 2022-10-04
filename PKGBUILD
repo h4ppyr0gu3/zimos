@@ -1,6 +1,6 @@
 # Maintainer: David Rogers <rogersdpdr@gmail.com>
 pkgname=zimos
-pkgver=0.0.2
+pkgver=0.1.0
 pkgrel=0
 pkgdesc="the presidents installation script"
 arch=('x86_64')
