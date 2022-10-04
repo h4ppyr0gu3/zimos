@@ -8,80 +8,19 @@
 #}
 
 ## arg 1:  the new package version
-post_install() {
-  sudo systemctl enable tlp
-  sudo systemctl disable getty@tty2.service
-  sudo systemctl enable ly
-  nvim --headless -c +PackerInstall +q
-  if [ -f $HOME/Screenshots ]; then 
-    mkdir $HOME/Screenshots 
-  fi
-  print_logo
-}
+# post_install() {
+#   print_logo
+# }
 
 ## arg 1:  the new package version
 ## arg 2:  the old package version
-pre_upgrade() {
-  rm $HOME/.config/scripts.old
-  rm $HOME/.config/alacritty.old
-  rm $HOME/.config/cronjobs.old
-  rm $HOME/.config/nvim.old
-  rm $HOME/.config/qutebrowser.old
-  rm $HOME/.config/scripts.old
-  rm $HOME/.config/sounds.old
-  rm $HOME/.config/sway.old
-  rm $HOME/.config/wallpapers.old
-  rm $HOME/.config/libinput-gestures.old
-  rm $HOME/.config/waybar.old
-  rm $HOME/.config/zathura.old
-  rm $HOME/.config/zsh.old
-}
+# pre_upgrade() {
+# }
 
 ## arg 1:  the new package version
 ## arg 2:  the old package version
-post_upgrade() {
-  nvim --headless -c +PackerInstall +q
-  configure_git
-  print_logo
-}
-
-configure_git() {
-  git config --global alias.co checkout
-  git config --global alias.st status
-  git config --global alias.br branch
-  git config --global push.default simple
-  git config --global pull.rebase true
-  git config --global fetch.prune true
-  git config --global core.pager 'less -x2'
-  git config --global core.editor 'nvim'
-  git config --global --add merge.ff false
-  git config --global --add pull.ff only
-  git config --global grep.lineNumber true
-  git config --global diff.wsErrorHighlight all
-  git config --global alias.conflicts diff --name-only --diff-filter=U
-  git config --global alias.change diff --name-only
-}
-
-print_logo() {
-  printf "\n"
-  printf "\n"
-  COLUMNS=$(tput cols) 
-  line1=" oooooooooooo ooooo ooo        ooooo   .oooooo.    .oooooo..o "
-  line2="d'\"\"\"\"\"\"d888' \`888' \`88.       .888'  d8P'  \`Y8b  d8P'    \`Y8 "
-  line3="      .888P    888   888b     d'888  888      888 Y88bo.      "
-  line4="     d888'     888   8 Y88. .P  888  888      888  \`\"Y8888o.  "
-  line5="   .888P       888   8  \`888'   888  888      888      \`\"Y88b "
-  line6="  d888'    .P  888   8    Y     888  \`88b    d88' oo     .d8P "
-  line7=".8888888888P  o888o o8o        o888o  \`Y8bood8P'  8\"\"88888P'  "
-  printf "${GREEN}%*s\n" $(((${#line1}+$COLUMNS)/2)) "$line1"
-  printf "${YELLOW}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line2"
-  printf "${RED}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line3"
-  printf "${BLACK}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line4"
-  printf "${RED}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line5"
-  printf "${YELLOW}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line6"
-  printf "${GREEN}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line7"
-  printf "${NC}\n"
-}
+# post_upgrade() {
+# }
 
 ## arg 1:  the old package version
 #pre_remove() {

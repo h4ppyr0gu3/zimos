@@ -29,20 +29,27 @@ install=install
 
 # next steps: 
 # add environment variables to environment
-# configure global git settings
 
 prepare() {
+
   if [ -f $HOME/.aur ]; then
     mkdir $HOME/.aur
     aur_packages
   fi
-  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+  flatpak_packages
   install_zsh
-  if [ -f $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
-    git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-    $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
-  fi
-  flatpak install flathub -y --noninteractive slack kdenlive insomnia
+  configure_git
+  prepare_dotfiles
+  move_dotfiles
+  init_git_cfg
+  enable_services
+}
+
+package() {
+  print_logo
+  install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  source $HOME/.zshrc
 }
 
 aur_packages() {
@@ -64,6 +71,23 @@ aur_clone() {
   cd $HOME
 }
 
+configure_git() {
+  git config --global alias.co checkout
+  git config --global alias.st status
+  git config --global alias.br branch
+  git config --global push.default simple
+  git config --global pull.rebase true
+  git config --global fetch.prune true
+  git config --global core.pager 'less -x2'
+  git config --global core.editor 'nvim'
+  git config --global --add merge.ff false
+  git config --global --add pull.ff only
+  git config --global grep.lineNumber true
+  git config --global diff.wsErrorHighlight all
+  git config --global alias.conflicts 'diff --name-only --diff-filter=U'
+  git config --global alias.change 'diff --name-only'
+}
+
 install_zsh() {
   if [ -f $HOME/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -73,36 +97,57 @@ install_zsh() {
   fi
 }
 
-package() {
-  cp $srcdir/dotfiles/.zshrc $HOME/.zshrc
-  mv $HOME/.config/scripts                   $HOME/.config/scripts.old
-  mv $HOME/.config/alacritty                 $HOME/.config/alacritty.old
-  mv $HOME/.config/cronjobs                  $HOME/.config/cronjobs.old
-  mv $HOME/.config/nvim                      $HOME/.config/nvim.old
-  mv $HOME/.config/qutebrowser               $HOME/.config/qutebrowser.old
-  mv $HOME/.config/scripts                   $HOME/.config/scripts.old
-  mv $HOME/.config/sounds                    $HOME/.config/sounds.old
-  mv $HOME/.config/sway                      $HOME/.config/sway.old
-  mv $HOME/.config/wallpapers                $HOME/.config/wallpapers.old
-  mv $HOME/.config/libinput-gestures.conf    $HOME/.config/libinput-gestures.old
-  mv $HOME/.config/waybar                    $HOME/.config/waybar.old
-  mv $HOME/.config/zathura                   $HOME/.config/zathura.old
-  mv $HOME/.config/zsh                       $HOME/.config/zsh.old
+configure_nvim() {
+  if [ -f $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
+    git clone --depth 1 https://github.com/wbthomason/packer.nvim \
+    $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
+  fi
 
+  nvim --headless -c +PackerInstall +q
+}
+
+flatpak_packages() {
+  flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  flatpak install flathub -y --noninteractive slack kdenlive insomnia
+}
+
+prepare_dotfiles() {
+  rm -rf $HOME/.config/*.old
+
+  [ -d old ] && mv $HOME/.zshrc                            $HOME/.zshrc.old
+  [ -d $HOME/.config/scripts ] && mv $HOME/.config/scripts   $HOME/.config/scripts.old
+  [ -d $HOME/.config/alacritty ] && mv $HOME/.config/alacritty $HOME/.config/alacritty.old
+  [ -d $HOME/.config/cronjobs ] && mv $HOME/.config/cronjobs  $HOME/.config/cronjobs.old
+  [ -d $HOME/.config/nvim ] && mv $HOME/.config/nvim  $HOME/.config/nvim.old
+  [ -d $HOME/.config/mako ] && mv $HOME/.config/mako  $HOME/.config/mako.old
+  [ -d $HOME/.config/qutebrowser ] && mv $HOME/.config/qutebrowser $HOME/.config/qutebrowser.old
+  [ -d $HOME/.config/sounds ] && mv $HOME/.config/sounds      $HOME/.config/sounds.old
+  [ -d $HOME/.config/sway ] && mv $HOME/.config/sway        $HOME/.config/sway.old
+  [ -d $HOME/.config/wallpapers ] && mv $HOME/.config/wallpapers  $HOME/.config/wallpapers.old
+  [ -d $HOME/.config/libinput-gestures.conf ] && mv $HOME/.config/libinput-gestures.conf  $HOME/.config/libinput-gestures.old
+  [ -d $HOME/.config/waybar ] && mv $HOME/.config/waybar      $HOME/.config/waybar.old
+  [ -d $HOME/.config/zathura ] && mv $HOME/.config/zathura     $HOME/.config/zathura.old
+  [ -d $HOME/.config/zsh ] && mv $HOME/.config/zsh         $HOME/.config/zsh.old
+}
+
+move_dotfiles() {
+  mv $srcdir/dotfiles/.zshrc $HOME/.zshrc
   mv $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
   mv $srcdir/dotfiles/.config/alacritty $HOME/.config/alacritty
   mv $srcdir/dotfiles/.config/cronjobs $HOME/.config/cronjobs
-  mv $srcdir/dotfiles/.config/mako $HOME/.config/nvim
+  mv $srcdir/dotfiles/.config/mako $HOME/.config/mako
+  mv $srcdir/dotfiles/.config/nvim $HOME/.config/nvim
   mv $srcdir/dotfiles/.config/qutebrowser $HOME/.config/qutebrowser
-  mv $srcdir/dotfiles/.config/scripts $HOME/.config/scripts
   mv $srcdir/dotfiles/.config/sounds $HOME/.config/sounds
   mv $srcdir/dotfiles/.config/sway $HOME/.config/sway
   mv $srcdir/dotfiles/.config/wallpapers $HOME/.config/wallpapers
-  mv $srcdir/dotfiles/.config/libinput-gestures.conf $HOME/.config/libiput-gestures.conf
+  mv $srcdir/dotfiles/.config/libinput-gestures.conf $HOME/.config/libinput-gestures.conf
   mv $srcdir/dotfiles/.config/waybar $HOME/.config/waybar
   mv $srcdir/dotfiles/.config/zathura $HOME/.config/zathura
   mv $srcdir/dotfiles/.config/zsh $HOME/.config/zsh
+}
 
+init_git_cfg() {
   if [ -f $HOME/.cfg ]; then
     git init $HOME/.cfg --bare
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
@@ -110,11 +155,40 @@ package() {
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME pull origin master
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add $HOME/.zshrc \
     $HOME/.config/scripts $HOME/.config/alacritty $HOME/.config/cronjobs \
-    $HOME/.config/nvim $HOME/.config/qutebrowser $HOME/.config/scripts \
+    $HOME/.config/nvim $HOME/.config/qutebrowser $HOME/.config/zsh \
     $HOME/.config/sounds $HOME/.config/sway $HOME/.config/wallpapers \
-    $HOME/.config/libiput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura \
-    $HOME/.config/zsh
+    $HOME/.config/libiput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura 
   fi
+}
 
-  install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+print_logo() {
+  BLACK='\033[0;30m'
+  printf "\n"
+  printf "\n"
+  COLUMNS=$(tput cols) 
+  line1=" oooooooooooo ooooo ooo        ooooo   .oooooo.    .oooooo..o "
+  line2="d'\"\"\"\"\"\"d888' \`888' \`88.       .888'  d8P'  \`Y8b  d8P'    \`Y8 "
+  line3="      .888P    888   888b     d'888  888      888 Y88bo.      "
+  line4="     d888'     888   8 Y88. .P  888  888      888  \`\"Y8888o.  "
+  line5="   .888P       888   8  \`888'   888  888      888      \`\"Y88b "
+  line6="  d888'    .P  888   8    Y     888  \`88b    d88' oo     .d8P "
+  line7=".8888888888P  o888o o8o        o888o  \`Y8bood8P'  8\"\"88888P'  "
+  printf "${GREEN}%*s\n" $(((${#line1}+$COLUMNS)/2)) "$line1"
+  printf "${YELLOW}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line2"
+  printf "${RED}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line3"
+  printf "${BLACK}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line4"
+  printf "${RED}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line5"
+  printf "${YELLOW}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line6"
+  printf "${GREEN}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line7"
+  printf "${NC}\n"
+}
+
+enable_services() {
+  sudo systemctl enable tlp
+  sudo systemctl disable getty@tty2.service
+  sudo systemctl enable ly
+  nvim --headless -c +PackerInstall +q
+  if [ -f $HOME/Screenshots ]; then 
+    mkdir $HOME/Screenshots 
+  fi
 }
