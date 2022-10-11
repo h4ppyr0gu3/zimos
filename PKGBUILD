@@ -28,7 +28,7 @@ install=install
 
 prepare() {
 
-  if [ -d $HOME/.aur ]; then
+  if [ ! -d $HOME/.aur ]; then
     mkdir $HOME/.aur
     aur_packages
   fi
@@ -89,21 +89,12 @@ configure_git() {
 }
 
 install_zsh() {
-  if [ -f $HOME/.oh-my-zsh ]; then
+  if [ ! -f $HOME/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     sudo chsh -s $(which zsh)
     git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
     git clone https://github.com/unixorn/fzf-zsh-plugin.git $HOME/.oh-my-zsh/custom/plugins/fzf-zsh-plugin
   fi
-}
-
-configure_nvim() {
-  if [ -f $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim ]; then
-    git clone --depth 1 https://github.com/wbthomason/packer.nvim \
-    $HOME/.local/share/nvim/site/pack/packer/start/packer.nvim
-  fi
-
-  nvim --headless -c +PackerInstall +q
 }
 
 flatpak_packages() {
@@ -112,7 +103,11 @@ flatpak_packages() {
 }
 
 prepare_dotfiles() {
-  rm -rf $HOME/.config/*.old
+  if [ -d $HOME/.config ]; then
+    rm -rf $HOME/.config/*.old
+  else 
+    mkdir $HOME/.config
+  fi
 
   [ -f $HOME/.zshrc ] && mv $HOME/.zshrc       $HOME/.zshrc.old
   [ -d $HOME/.config/scripts ] && mv $HOME/.config/scripts   $HOME/.config/scripts.old
@@ -123,11 +118,13 @@ prepare_dotfiles() {
   [ -d $HOME/.config/qutebrowser ] && mv $HOME/.config/qutebrowser $HOME/.config/qutebrowser.old
   [ -d $HOME/.config/sounds ] && mv $HOME/.config/sounds      $HOME/.config/sounds.old
   [ -d $HOME/.config/sway ] && mv $HOME/.config/sway        $HOME/.config/sway.old
-  [ -d $HOME/.config/wallpapers ] && mv $HOME/.config/wallpapers  $HOME/.config/wallpapers.old
+  [ -f $HOME/.config/wallpapers ] && mv $HOME/.config/wallpapers  $HOME/.config/wallpapers.old
   [ -d $HOME/.config/libinput-gestures.conf ] && mv $HOME/.config/libinput-gestures.conf  $HOME/.config/libinput-gestures.old
   [ -d $HOME/.config/waybar ] && mv $HOME/.config/waybar      $HOME/.config/waybar.old
   [ -d $HOME/.config/zathura ] && mv $HOME/.config/zathura     $HOME/.config/zathura.old
   [ -d $HOME/.config/zsh ] && mv $HOME/.config/zsh  $HOME/.config/zsh.old
+  # I don't know why this works but it does
+  echo ""
 }
 
 move_dotfiles() {
@@ -180,15 +177,19 @@ print_logo() {
   printf "${RED}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line5"
   printf "${YELLOW}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line6"
   printf "${GREEN}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line7"
-  printf "${NC}\n"
+  printf "${NC}\n\n"
+
+  echo Please run the following to configure nvime
+  echo git clone --depth 1 https://github.com/wbthomason/packer.nvim \\
+  echo  $HOME/.lcola/share/nvim/site/pack/packer/start/packer.nvim
+  echo nvim --headless -c +PackerInstall +q
 }
 
 enable_services() {
   sudo systemctl enable tlp
   sudo systemctl disable getty@tty2.service
   sudo systemctl enable ly
-  nvim --headless -c +PackerInstall +q
-  if [ -f $HOME/Screenshots ]; then 
-    mkdir $HOME/Screenshots 
+  if [ ! -d $HOME/screenshots ]; then 
+    mkdir $HOME/screenshots 
   fi
 }

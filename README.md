@@ -66,3 +66,9 @@ cd setup_v2
 ## Contributing
 
 If you'd like additional custom configurations please add them in the `custom.sh` file and update the README, then create a Pull Request
+
+AP
+- add echo after prepare dot files
+- add font with emojis
+- add chsh
+- install oh my zsh properly
