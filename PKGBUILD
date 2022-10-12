@@ -17,7 +17,8 @@ depends=(
 'xdg-desktop-portal' 'man-db' 'mokutil' 'lsof' 'exa' 'nginx' 'kubectl' 'grpc' 
 'gnome-calculator' 'wireshark-qt' 'feh' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
-'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler'
+'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler' 'bluez-utils'
+'xorg-xwayland'
 )
 source=(
     "git+https://github.com/h4ppyr0gu3/dotfiles.git"
@@ -58,6 +59,7 @@ aur_packages() {
   aur_clone https://aur.archlinux.org/libinput-gestures.git
   aur_clone https://aur.archlinux.org/yay.git
   aur_clone https://aur.archlinux.org/ydotool-bin.git
+  aur_clone https://aur.archlinux.org/nerd-fonts-jetbrains-mono.git
 }
 
 aur_clone() {
@@ -118,8 +120,8 @@ prepare_dotfiles() {
   [ -d $HOME/.config/qutebrowser ] && mv $HOME/.config/qutebrowser $HOME/.config/qutebrowser.old
   [ -d $HOME/.config/sounds ] && mv $HOME/.config/sounds      $HOME/.config/sounds.old
   [ -d $HOME/.config/sway ] && mv $HOME/.config/sway        $HOME/.config/sway.old
-  [ -f $HOME/.config/wallpapers ] && mv $HOME/.config/wallpapers  $HOME/.config/wallpapers.old
-  [ -d $HOME/.config/libinput-gestures.conf ] && mv $HOME/.config/libinput-gestures.conf  $HOME/.config/libinput-gestures.old
+  [ -d $HOME/.config/wallpapers ] && mv $HOME/.config/wallpapers  $HOME/.config/wallpapers.old
+  [ -f $HOME/.config/libinput-gestures.conf ] && mv $HOME/.config/libinput-gestures.conf  $HOME/.config/libinput-gestures.old
   [ -d $HOME/.config/waybar ] && mv $HOME/.config/waybar      $HOME/.config/waybar.old
   [ -d $HOME/.config/zathura ] && mv $HOME/.config/zathura     $HOME/.config/zathura.old
   [ -d $HOME/.config/zsh ] && mv $HOME/.config/zsh  $HOME/.config/zsh.old
@@ -145,7 +147,7 @@ move_dotfiles() {
 }
 
 init_git_cfg() {
-  if [ -f $HOME/.cfg ]; then
+  if [ ! -d $HOME/.cfg ]; then
     git init $HOME/.cfg --bare
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME remote set-url origin git@github.com:h4ppyr0gu3/dotfiles
