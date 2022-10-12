@@ -91,7 +91,7 @@ configure_git() {
 }
 
 install_zsh() {
-  if [ ! -f $HOME/.oh-my-zsh ]; then
+  if [ ! -d $HOME/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     sudo chsh -s $(which zsh)
     git clone https://github.com/zsh-users/zsh-autosuggestions $HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions
@@ -150,13 +150,12 @@ init_git_cfg() {
   if [ ! -d $HOME/.cfg ]; then
     git init $HOME/.cfg --bare
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
-    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME remote set-url origin git@github.com:h4ppyr0gu3/dotfiles
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME pull origin master
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add $HOME/.zshrc \
     $HOME/.config/scripts $HOME/.config/alacritty $HOME/.config/cronjobs \
     $HOME/.config/nvim $HOME/.config/qutebrowser $HOME/.config/zsh \
     $HOME/.config/sounds $HOME/.config/sway $HOME/.config/wallpapers \
-    $HOME/.config/libiput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura 
+    $HOME/.config/libinput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura 
   fi
 }
 
@@ -181,10 +180,10 @@ print_logo() {
   printf "${GREEN}%*s\n" $(((${#line2}+$COLUMNS)/2)) "$line7"
   printf "${NC}\n\n"
 
-  echo Please run the following to configure nvime
-  echo git clone --depth 1 https://github.com/wbthomason/packer.nvim \\
-  echo  $HOME/.lcola/share/nvim/site/pack/packer/start/packer.nvim
-  echo nvim --headless -c +PackerInstall +q
+  echo To complete the installation you may need to run 
+  echo                $ zimos i
+  echo ""
+
 }
 
 enable_services() {
