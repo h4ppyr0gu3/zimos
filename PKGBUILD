@@ -18,7 +18,7 @@ depends=(
 'gnome-calculator' 'wireshark-qt' 'feh' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
 'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler' 'bluez-utils'
-'xorg-xwayland'
+'xorg-xwayland' 'kubectx'
 )
 source=(
     "git+https://github.com/h4ppyr0gu3/dotfiles.git"
