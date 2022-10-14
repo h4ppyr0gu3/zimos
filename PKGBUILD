@@ -88,6 +88,7 @@ configure_git() {
   git config --global diff.wsErrorHighlight all
   git config --global alias.conflicts 'diff --name-only --diff-filter=U'
   git config --global alias.change 'diff --name-only'
+  git config --global commit.gpgsign true
 }
 
 install_zsh() {
@@ -150,7 +151,6 @@ init_git_cfg() {
   if [ ! -d $HOME/.cfg ]; then
     git init $HOME/.cfg --bare
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME config --local status.showUntrackedFiles no
-    /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME pull origin master
     /usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME add $HOME/.zshrc \
     $HOME/.config/scripts $HOME/.config/alacritty $HOME/.config/cronjobs \
     $HOME/.config/nvim $HOME/.config/qutebrowser $HOME/.config/zsh \
