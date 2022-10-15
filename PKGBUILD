@@ -18,7 +18,7 @@ depends=(
 'gnome-calculator' 'wireshark-qt' 'feh' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
 'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler' 'bluez-utils'
-'xorg-xwayland' 'kubectx'
+'xorg-xwayland' 'kubectx' 'dnsmasq' 'xdg-desktop-portal-gtk'
 )
 source=(
     "git+https://github.com/h4ppyr0gu3/dotfiles.git"
@@ -155,7 +155,8 @@ init_git_cfg() {
     $HOME/.config/scripts $HOME/.config/alacritty $HOME/.config/cronjobs \
     $HOME/.config/nvim $HOME/.config/qutebrowser $HOME/.config/zsh \
     $HOME/.config/sounds $HOME/.config/sway $HOME/.config/wallpapers \
-    $HOME/.config/libinput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura 
+    $HOME/.config/libinput-gestures.conf $HOME/.config/waybar $HOME/.config/zathura \
+    $HOME/.config/mako
   fi
 }
 
