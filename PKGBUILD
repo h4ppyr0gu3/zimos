@@ -19,7 +19,7 @@ depends=(
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
 'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler' 'bluez-utils'
 'xorg-xwayland' 'kubectx' 'dnsmasq' 'xdg-desktop-portal-gtk' 'tesseract-data-eng'
-'tesseract'
+'tesseract' 'binutils'
 )
 source=(
     "git+https://github.com/h4ppyr0gu3/dotfiles.git"
