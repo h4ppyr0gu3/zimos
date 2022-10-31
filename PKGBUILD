@@ -13,7 +13,7 @@ depends=(
 'slurp' 'grim' 'ripgrep' 'fzf' 'networkmanager' 'mako' 'jq' 'brightnessctl' 'tlp'
 'asciinema' 'cronie' 'ncdu' 'net-tools' 'docker' 'docker-compose' 'neofetch'
 'playerctl' 'net-tools' 'nmap' 'traceroute' 'aircrack-ng' 'pipewire' 'pipewire-pulse'
-'qbittorrent' 'valgrind' 'vlc' 'mpv' 'wl-clipboard' 'xdg-desktop-portal-wlr' 'sudo'
+'qbittorrent' 'valgrind' 'mpv' 'wl-clipboard' 'xdg-desktop-portal-wlr' 'sudo'
 'xdg-desktop-portal' 'man-db' 'mokutil' 'lsof' 'exa' 'nginx' 'kubectl' 'grpc' 
 'gnome-calculator' 'wireshark-qt' 'feh' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
