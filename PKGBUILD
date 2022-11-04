@@ -103,7 +103,7 @@ install_zsh() {
 
 flatpak_packages() {
   flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  flatpak install flathub -y --noninteractive slack kdenlive insomnia
+  flatpak install flathub -y --noninteractive slack kdenlive postman
 }
 
 prepare_dotfiles() {
