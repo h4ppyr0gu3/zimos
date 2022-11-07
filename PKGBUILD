@@ -15,7 +15,7 @@ depends=(
 'playerctl' 'net-tools' 'nmap' 'traceroute' 'aircrack-ng' 'pipewire' 'pipewire-pulse'
 'qbittorrent' 'valgrind' 'mpv' 'wl-clipboard' 'xdg-desktop-portal-wlr' 'sudo'
 'xdg-desktop-portal' 'man-db' 'mokutil' 'lsof' 'exa' 'nginx' 'kubectl' 'grpc' 
-'gnome-calculator' 'wireshark-qt' 'feh' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
+'gnome-calculator' 'wireshark-qt' 'imv' 'ffmpeg' 'waybar' 'redis' 'postgresql' 
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
 'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler' 'bluez-utils'
 'xorg-xwayland' 'kubectx' 'dnsmasq' 'xdg-desktop-portal-gtk' 'tesseract-data-eng'
