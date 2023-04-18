@@ -19,7 +19,7 @@ depends=(
 'pavucontrol' 'openssh' 'openvpn' 'audacious' 'wofi' 'fakeroot' 'patch' 'make'
 'rsync' 'git' 'curl' 'bison' 'upower' 'zathura' 'zathura-pdf-poppler' 'bluez-utils'
 'xorg-xwayland' 'kubectx' 'dnsmasq' 'xdg-desktop-portal-gtk' 'tesseract-data-eng'
-'tesseract' 'binutils'
+'tesseract' 'binutils' 'gcc'
 )
 source=(
     "git+https://github.com/h4ppyr0gu3/dotfiles.git"
@@ -49,6 +49,17 @@ package() {
   install -Dm644 $srcdir/../LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
+aur_clone() {
+  cd $HOME/.aur
+  files_before=($(ls -f))
+  git clone $1
+  files_after=($(ls -f))
+  directory=$(echo ${files_before[@]} ${files_after[@]} | tr ' ' '\n' | sort | uniq -u)
+  cd $directory
+  makepkg -sicm --noconfirm --needed --noprogressbar
+  cd $HOME
+}
+
 ###############################################
 # These are all custom installation functions #
 #       The PKGBUILD file ends here           #
@@ -61,17 +72,6 @@ aur_packages() {
   aur_clone https://aur.archlinux.org/yay.git
   aur_clone https://aur.archlinux.org/ydotool-bin.git
   aur_clone https://aur.archlinux.org/nerd-fonts-jetbrains-mono.git
-}
-
-aur_clone() {
-  cd $HOME/.aur
-  files_before=($(ls -f))
-  git clone $1
-  files_after=($(ls -f))
-  directory=$(echo ${files_before[@]} ${files_after[@]} | tr ' ' '\n' | sort | uniq -u)
-  cd $directory
-  makepkg -sicm --noconfirm --needed --noprogressbar
-  cd $HOME
 }
 
 configure_git() {
